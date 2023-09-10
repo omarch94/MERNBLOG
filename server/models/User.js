@@ -3,7 +3,7 @@ const Joi=require('joi')
 const jwt=require('jsonwebtoken')
 //user schema
 
-const userSchema=new mongoose.Schema({
+const UserSchema=new mongoose.Schema({
     username:{
         type:String,
         required:true,
@@ -48,15 +48,12 @@ const userSchema=new mongoose.Schema({
 timestamps:true,
 })
 //Generate Auth token 
-userSchema.methods.generateAuthToken=function() {
-    return jwt.sign({
-        id:this._id,
-        isAdmin:this.isAdmin
-    },"privateKey")
+UserSchema.methods.generateAuthToken = function() {
+    return jwt.sign({id:this._id,isAdmin:this.isAdmin},process.env.JWT_SECRET);
 }
 
 
-const User=mongoose.model("User",userSchema);
+const User=mongoose.model("User",UserSchema);
 //validate user in express js using Joi
 function validateRegisterUser(obj){
 const schema=Joi.object({
@@ -78,4 +75,18 @@ function validateLoginUser(obj){
     });
     return schema.validate(obj)
     }
-module.exports={User,validateRegisterUser,validateLoginUser}
+    
+    
+    //validate update user 
+
+
+    function validateUpdateUser(obj){
+        const schema=Joi.object({
+            username:Joi.string().trim().min(2).max(50).required(),
+            // email:Joi.string().trim().min(5).max(50).required(),
+            password:Joi.string().trim().min(8).required(),
+            bio:Joi.string()
+        });
+        return schema.validate(obj)
+        }   
+module.exports={User,validateRegisterUser,validateLoginUser,validateUpdateUser}

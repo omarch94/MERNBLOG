@@ -61,7 +61,6 @@ if (!isPasswordMatch){
 }
   //generate the token (JWT)
   const token=user.generateAuthToken()
-
   // response to client
   res.status(200).json({
     _id:user._id,
