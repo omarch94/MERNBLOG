@@ -143,3 +143,29 @@ const fs=require("fs")
   //8-Remove image from the server 
   fs.unlinkSync(imagePath)
  })
+
+ /**------------------------------------
+ * @desc Delete user profile (Account)
+ * @route  api/users/profile/:id
+ * @method DELETE
+ * @access private (only admin or user himself)
+ -------------------------------------*/
+
+ module.exports.deleteUserController=asyncHandler(async(req,res)=>{{
+  // 1- get user from db
+const user=await User.findById(req.params.id);
+if(!user){
+  return res.status(404).json({message:"No user"})
+}
+  //2- get all posts from db
+  //3- get publicIds from posts
+  //4- delete all image posts from cloudinary that belong to the user account
+  //5-delete profile picture from cloudinary
+  if(user.profileFoto.publicId !== null) {
+    await cloudinaryRemoveImage(user.profileFoto.publicId);
+  }  //6- delete user posts and comments
+  //7-delete the user himself
+  await User.findByIdAndDelete(req.params.id)
+  //8-send the response to the client
+  res.status(200).json({message:"you profile has been deleted"})
+ }})
