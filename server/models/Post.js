@@ -1,50 +1,72 @@
 const mongoose=require('mongoose');
+const Joi=require('joi')
 
 //user schema
 
 const postSchema=new mongoose.Schema({
-    username:{
+    title:{
         type:String,
         required:true,
         trim:true,
         minLength:2,
         maxLength:50
     },
-    email:{
+    description:{
         type:String,
         required:true,
         trim:true,
-        minLength:5,
-        maxLength:50,
-        unique:true,
+        minLength:10,
     },
-    password:{
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        required:true,
+
+    },
+    category:{
         type:String,
         required:true,
-        trim:true,
-        minLength:8,
+
     },
-    typeFoto:{
+    image:{
         type:Object,
        default:{
         url:"https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_1280.png",
         publicId:null,
        }
     },
-    bio:{
-        type:Object,
-    },
-    isAdmin:{
-        type:Boolean,
-        default:false,
-    },
-    isAccountVerified:{
-        type:Boolean,
-        default:false,
-    }
+    likes:[
+        {
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+        }
+],
 },
 {
 timestamps:true,
+  toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 })
-const Post=mongoose.model("Post",userSchema);
-module.exports={Post}
+const Post=mongoose.model("Post",postSchema);
+// validation
+function validateCreatePost(obj){
+    const schema=Joi.object({
+        title:Joi.string().trim().min(2).max(200).required(),
+        description:Joi.string().trim().min(10).required(),
+        category:Joi.string().trim().required(),
+
+    })
+    return schema.validate(obj)
+}
+
+function validateUpdatePost(obj){
+    const schema=Joi.object({
+        title:Joi.string().trim().min(2).max(200),
+        description:Joi.string().trim().min(10),
+        category:Joi.string().trim(),
+
+    })
+    return schema.validate(obj)
+}
+
+module.exports={Post,validateCreatePost,validateUpdatePost}

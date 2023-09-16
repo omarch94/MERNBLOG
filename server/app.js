@@ -10,6 +10,7 @@ app.use(express.json())
 //routes
 app.use('/api/auth',require('./routes/authRoute'))
 app.use('/api/users',require('./routes/usersRoute'))
+app.use('/api/posts',require('./routes/postRoute'))
 //CONNECTION DB
 connectDb();
 //RUN SERVER
