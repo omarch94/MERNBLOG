@@ -47,7 +47,7 @@ const {cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary
  * @desc get all posts
  * @route  api/posts
  * @method GET
- * @access private (only logged in users)
+ * @access public
  -------------------------------------*/
 
  module.exports.getAllPostsController=asyncHandler(async(req,res)=>{
@@ -71,4 +71,58 @@ const {cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary
       }
       res.status(200).json(posts);
     });
- 
+ /**------------------------------------
+ * @desc get single post
+ * @route  api/posts/:id
+ * @method GET
+ * @access public 
+ -------------------------------------*/
+
+ module.exports.getSinglePost=asyncHandler(async(req,res)=>{
+  const post=await Post.findById(req.params.id).populate("user",["-password"])
+  if(!post){
+    return res.status(404).json({message:"No post found"})
+  }
+  return res.status(200).json({post})
+ })
+
+ /**------------------------------------
+ * @desc Count Number of posts
+ * @route  api/posts
+ * @method GET
+ * @access public (only logged in users)
+ -------------------------------------*/
+ module.exports.getNumberPosts=asyncHandler(async(req,res)=>{
+  const numPost=await Post.count();
+  if(numPost==null){
+    return res.status(400).json({message:"there are no posts"})
+  }
+  return res.status(200).json(numPost)
+ })
+
+  /**------------------------------------
+ * @desc Delete post
+ * @route  api/posts
+ * @method DELETE
+ * @access private (only logged in users)
+ -------------------------------------*/
+
+ module.exports.deletePostController=asyncHandler(async(req,res)=>{
+  // find the post in db
+  const post=await Post.findById(req.params.id)
+  if(!post){
+    return res.status(400).json({message:"Post not found"})
+  }
+  if(req.user.isAdmin||req.user.id===post.user.toString()){
+    await Post.findByIdAndDelete(req.params.id)
+    await cloudinaryRemoveImage(post.image.publicId)
+    
+    res.status(200).json({
+      message:"Post deleted successfuly",
+      postId:post._id
+    })
+    }else{
+      return res.status(403).json({message:"Forbiden access denied "})
+    }
+
+ })
