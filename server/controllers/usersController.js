@@ -13,7 +13,7 @@ const fs=require("fs")
 
  module.exports.getAllUsersController=asyncHandler(async(req,res)=>{
     console.log(req.headers.authorization)
-    const users=await User.find().select('-password');
+    const users=await User.find().select('-password').populate("posts");
     res.status(200).json(users)
  })
 
@@ -28,7 +28,7 @@ const fs=require("fs")
 
  module.exports.getUserProfileController=asyncHandler(async(req,res)=>{
     //dont show password to client 
-   const user=await User.findById(req.params.id).select('-password');
+   const user=await User.findById(req.params.id).select('-password').populate("posts");
    if(!user){
       return res.status(404).json({message:"user not found"})
    }else{
