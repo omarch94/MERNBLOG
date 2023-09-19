@@ -1,6 +1,7 @@
 const express=require('express');
 //Connection to db
-const connectDb=require('./config/connectDb')
+const connectDb=require('./config/connectDb');
+const {errorHandler,notFound} = require('./middlewares/error');
 // PORT
 const port=process.env.PORT||8002;
 require('dotenv').config();
@@ -14,6 +15,10 @@ app.use('/api/posts',require('./routes/postRoute'))
 app.use('/api/comments',require('./routes/commentRoute'))
 app.use('/api/categories',require('./routes/categoryRoute'))
 
+// NOT FOUND ERROR HANDLER
+app.use(notFound)
+// Error Handler Midlleware
+app.use(errorHandler)
 //CONNECTION DB
 connectDb();
 //RUN SERVER
