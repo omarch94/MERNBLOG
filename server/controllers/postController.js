@@ -4,7 +4,7 @@ const fs=require("fs");
 const path=require("path");
 
 const {cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary");
-
+const {Comment}=require("../models/Comment")
 /**------------------------------------
  * @desc Create  New post
  * @route  api/posts
@@ -79,9 +79,9 @@ const {cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary
  * @method GET
  * @access public 
  -------------------------------------*/
-
  module.exports.getSinglePost=asyncHandler(async(req,res)=>{
   const post=await Post.findById(req.params.id).populate("user",["-password"])
+  .populate("comments"); 
   if(!post){
     return res.status(404).json({message:"No post found"})
   }
@@ -108,7 +108,6 @@ const {cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary
  * @method DELETE
  * @access private (only admin or  owner of the post)
  -------------------------------------*/
-
  module.exports.deletePostController=asyncHandler(async(req,res)=>{
   // find the post in db
   const post=await Post.findById(req.params.id)
@@ -118,7 +117,10 @@ const {cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary
   if(req.user.isAdmin||req.user.id===post.user.toString()){
     await Post.findByIdAndDelete(req.params.id)
     await cloudinaryRemoveImage(post.image.publicId)
-    //@TODO Delete All the related Comments !
+    //Delete All the related Comments !
+    await Comment.deletMany({
+      postId:post._id
+    })
     res.status(200).json({
       message:"Post deleted successfuly",
       postId:post._id
@@ -126,36 +128,30 @@ const {cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary
     }else{
       return res.status(403).json({message:"Forbiden access denied "})
     }
-
  })
-
  /**------------------------------------
  * @desc Update post
  * @route  api/posts/:id
  * @method UPDATE
  * @access private (only    owner of the post)
  -------------------------------------*/
-
  module.exports.updatePostController=asyncHandler(async(req,res)=>{
  // 1. Validation
  const { error } = validateUpdatePost(req.body);
  if (error) {
    return res.status(400).json({ message: error.details[0].message });
  }
-
  // 2. Get the post from DB and check if post exist
  const post = await Post.findById(req.params.id);
  if (!post) {
    return res.status(404).json({ message: "post not found" });
  }
-
  // 3. check if this post belong to logged in user
  if (req.user.id !== post.user.toString()) {
   return res
      .status(403)
      .json({ message: "access denied, you are not allowed" });
  }
-
  // 4. Update post
  const updatedPost = await Post.findByIdAndUpdate(
    req.params.id,
@@ -168,31 +164,27 @@ const {cloudinaryUploadImage,cloudinaryRemoveImage}=require("../utils/cloudinary
    },
    { new: true }
  ).populate("user", ["-password"])
-//  .populate("comments");
+ .populate("Comment");
 
  // 5. Send response to the client
  res.status(200).json(updatedPost);
  })
-
 /**-----------------------------------------------
  * @desc    Update Post Image
  * @route   /api/posts/upload-image/:id
  * @method  PUT
  * @access  private (only owner of the post)
  ------------------------------------------------*/
-
  module.exports.updateImagePostController=asyncHandler(async(req,res)=>{
    // 1. Validation
   if (!req.file) {
     return res.status(400).json({ message: "no image provided" });
   }
-
   // 2. Get the post from DB and check if post exist
   const post = await Post.findById(req.params.id);
   if (!post) {
     return res.status(404).json({ message: "post not found" });
   }
-
   // 3. Check if this post belong to logged in user
   if (req.user.id !== post.user.toString()) {
     return res

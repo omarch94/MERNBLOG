@@ -47,6 +47,13 @@ timestamps:true,
   toJSON: { virtuals: true },
     toObject: { virtuals: true }
 })
+//Populate comment that belongs to the post 
+postSchema.virtual("comments",{
+    ref:"Comment",
+    foreignField:"postId",
+    localField:"_id"
+})
+
 const Post=mongoose.model("Post",postSchema);
 // validation
 function validateCreatePost(obj){

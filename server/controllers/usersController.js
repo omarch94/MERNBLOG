@@ -4,6 +4,8 @@ const bcrypt=require('bcryptjs')
 const path=require('path');
 const {cloudinaryUploadImage,cloudinaryRemoveImage}=require('../utils/cloudinary')
 const fs=require("fs")
+const{Post}=require("../models/Post")
+const {Comment}=require("../models/Comment")
 /**------------------------------------
  * @desc Get  All users
  * @route  api/auth/profile
@@ -158,12 +160,17 @@ if(!user){
   return res.status(404).json({message:"No user"})
 }
   //2- get all posts from db
+
   //3- get publicIds from posts
   //4- delete all image posts from cloudinary that belong to the user account
   //5-delete profile picture from cloudinary
   if(user.profileFoto.publicId !== null) {
     await cloudinaryRemoveImage(user.profileFoto.publicId);
-  }  //6- delete user posts and comments
+  } 
+   //6- delete user posts and comments
+      await Post.deleteMany({user:user._id});
+      await Comment.deleteMany({user:user._id})
+
   //7-delete the user himself
   await User.findByIdAndDelete(req.params.id)
   //8-send the response to the client
