@@ -160,9 +160,14 @@ if(!user){
   return res.status(404).json({message:"No user"})
 }
   //2- get all posts from db
-
+const posts=await Post.find({user:user._id})
   //3- get publicIds from posts
+  const publicIds=posts?.map((post)=>post.image.publicId)
   //4- delete all image posts from cloudinary that belong to the user account
+  if(publicIds?.length>0){
+      await cloudinaryRemoveImage(publicIds)
+  }
+ 
   //5-delete profile picture from cloudinary
   if(user.profileFoto.publicId !== null) {
     await cloudinaryRemoveImage(user.profileFoto.publicId);
