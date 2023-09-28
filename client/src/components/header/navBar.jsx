@@ -1,5 +1,6 @@
 import React from 'react'
 import "../header/header.css"
+import { Link } from 'react-router-dom'
 const NavBar = ({setToggle,toggle}) => {
 
   return (
@@ -7,23 +8,21 @@ const NavBar = ({setToggle,toggle}) => {
       <nav className="navbar" style={{clipPath:toggle&& "polygon(0 0, 100% 0, 100% 100%, 0 100%)"  }}>
 
 <ul className="nav-links">
-    <li className="nav-link"  onClick={()=>setToggle(false)}>
+    <Link to="/"className="nav-link"  onClick={()=>setToggle(false)}>
                     <i class="bi bi-house"></i> Home
-    </li>
-    <li className="nav-link"onClick={()=>setToggle(false)}>
+    </Link>
+    <Link to="/post" className="nav-link"onClick={()=>setToggle(false)}>
                     <i class="bi bi-stickies"></i>Posts 
 
-    </li>
-    <li className="nav-link"onClick={()=>setToggle(false)}>
+    </Link>
+    <Link to="/posts/create-post" className="nav-link"onClick={()=>setToggle(false)}>
 <i class="bi bi-journal-plus"></i> Create Post
 
 
-    </li>
-<li className="nav-link"onClick={()=>setToggle(false)}>
+    </Link>
+    <Link to="/admin" className="nav-link"onClick={()=>setToggle(false)}>
 <i class="bi bi-person-check"></i> Admin Dashboard
-
-
-    </li>
+    </Link>
 </ul>
 </nav>
     </div>

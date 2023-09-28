@@ -1,17 +1,17 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 const HeaderRight = () => {
   return (
     
     <div className="header-right">
-    <div className="header-right-link">
+    <Link to="/login" className="header-right-link">
     <i class="bi bi-box-arrow-in-right"></i>
     <span>Login</span>
-    </div>
-<div className="header-right-link">
+    </Link>
+<Link to="/register" className="header-right-link">
     <i class="bi bi-person-plus"></i>
     <span>Register</span>
-    </div>
+    </Link>
 </div>
   )
 }
