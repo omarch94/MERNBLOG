@@ -11,7 +11,7 @@ const NavBar = ({setToggle,toggle}) => {
     <Link to="/"className="nav-link"  onClick={()=>setToggle(false)}>
                     <i class="bi bi-house"></i> Home
     </Link>
-    <Link to="/post" className="nav-link"onClick={()=>setToggle(false)}>
+    <Link to="/posts" className="nav-link"onClick={()=>setToggle(false)}>
                     <i class="bi bi-stickies"></i>Posts 
 
     </Link>

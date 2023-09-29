@@ -23,6 +23,7 @@ const Home = () => {
             </Link>
         </div>
    </section>
+ 
   )
 }
 
