@@ -4,6 +4,8 @@ import {posts} from "../../dummyData"
 import "./post-details.css"
 import {toast} from "react-toastify"
 import AddComments from '../../components/comments/AddComments';
+import CommentList from '../../components/comments/CommentList';
+import swal from "sweetalert"
 const PostDetails = () => {
     const {id}=useParams();
     const post=posts.find(post=>post._id===parseInt(id));
@@ -18,6 +20,27 @@ const PostDetails = () => {
            return toast.warning("image required")
         }
     }
+
+    // delete post handler
+    const deletePostHandler = () => {
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this imaginary file!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              swal("Post  has been deleted!", {
+                icon: "success",
+              });
+            } else {
+              swal("Something went wrong!");
+            }
+          });
+          
+      };
   return (
       <section className="post-details">
     {/* {post.title} */}
@@ -51,8 +74,8 @@ const PostDetails = () => {
                 <small>{post.likes.length}likes</small>
         </div>
         <div>
-            <i className="bi bi-pencil-square"></i>
-            <i className="bi bi-trash-fill"></i>
+            <i  className="bi bi-pencil-square"></i>
+            <i className="bi bi-trash-fill" onClick={deletePostHandler}></i>
         </div>
 
     </div>
@@ -61,7 +84,9 @@ const PostDetails = () => {
         Add Comment form
         <AddComments/>
     </div>
-    <div>Add comment list</div>
+    <div>
+        <CommentList/>
+    </div>
    </section>
   )
 }
