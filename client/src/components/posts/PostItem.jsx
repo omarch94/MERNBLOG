@@ -28,7 +28,7 @@ const PostItem = ({post}) => {
                 {post.description}
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, consequatur! Doloremque ab, rem odio odit nobis et consequatur blanditiis deserunt sapiente, nulla corporis aliquam eveniet suscipit placeat possimus dignissimos ad!
             </p>
-            <Link to={`post/details/${post._id}`} className='post-item-link'>
+            <Link to={`/posts/details/${post._id}`} className='post-item-link'>
                 Reade More...
             </Link>
             </div>

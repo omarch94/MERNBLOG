@@ -8,18 +8,23 @@ import CreatePostPage from './pages/create-post/CreatePostPage';
 import Admin from './pages/admin/Admin';
 import PostPage from './pages/post/PostPage';
 import Footer from './components/footer/Footer';
+import PostDetails from './pages/post-details/PostDetails';
+import { ToastContainer } from 'react-toastify';
 function App() {
   return (
     <BrowserRouter>
     <div className="App">
+      <ToastContainer theme='colored' position='top-center'/>
       <Header/>
+
       <Routes>
         <Route path='/' element={<Home/>}> </Route>
         <Route path='/login' element={<Login/>}> </Route>
         <Route path='/register' element={<Register/>}> </Route>
-        <Route path='/posts/create-post' element={<CreatePostPage/>}> </Route>
-        <Route path="/admin" element={<Admin/>}></Route>
         <Route path='/posts' element={<PostPage/>}> </Route>
+        <Route path='/posts/create-post' element={<CreatePostPage/>}> </Route>
+        <Route path="/posts/details/:id" element={<PostDetails/>}></Route>
+        <Route path="/admin" element={<Admin/>}></Route>
 
       </Routes>
       <Footer/>

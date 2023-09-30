@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import "./create-post.css"
-import {toast,ToastContainer} from "react-toastify"
+import {toast} from "react-toastify"
 const CreatePostPage = () => {
   const [title,setTitle]=useState("")
   const [description,setDescription]=useState("")
@@ -30,7 +30,6 @@ const formSubmitHandler=(e)=>{
 }
   return (
    <div className="section create-post">
-    <ToastContainer theme='colored' position='top-center'/>
           <h1 className="create-post-title">
             Create Post
           </h1>
