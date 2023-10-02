@@ -10,6 +10,7 @@ import PostPage from './pages/post/PostPage';
 import Footer from './components/footer/Footer';
 import PostDetails from './pages/post-details/PostDetails';
 import { ToastContainer } from 'react-toastify';
+import Categorie from './pages/categorie/Categorie';
 function App() {
   return (
     <BrowserRouter>
@@ -21,9 +22,19 @@ function App() {
         <Route path='/' element={<Home/>}> </Route>
         <Route path='/login' element={<Login/>}> </Route>
         <Route path='/register' element={<Register/>}> </Route>
-        <Route path='/posts' element={<PostPage/>}> </Route>
+
+        {/* <Route path='/posts' element={<PostPage/>}> </Route>
         <Route path='/posts/create-post' element={<CreatePostPage/>}> </Route>
         <Route path="/posts/details/:id" element={<PostDetails/>}></Route>
+        <Route path="/posts/categories/:category" element={<Categorie/>}></Route>
+       */}
+
+       <Route path="posts">
+            <Route  index  element={<PostPage/>}/> 
+            <Route path='create-post' element={<CreatePostPage/>}> </Route>
+            <Route path="details/:id" element={<PostDetails/>}></Route>
+            <Route path="categories/:category" element={<Categorie/>}></Route>
+       </Route>
         <Route path="/admin" element={<Admin/>}></Route>
 
       </Routes>

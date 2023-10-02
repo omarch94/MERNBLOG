@@ -20,7 +20,7 @@ const PostItem = ({post}) => {
             </div>
             <div className="post-item-details">
                 <h4 className="post-item-title">{post.title}</h4>
-                <Link className='post-item-category' to={`post/categories/${post.category}`}>
+                <Link className='post-item-category' to={`/posts/categories/${post.category}`}>
                 {post.category}
                 </Link>
             </div>
