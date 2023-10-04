@@ -4,8 +4,10 @@ import PostList from '../../components/posts/PostList'
 import { posts } from '../../dummyData'
 import {toast} from "react-toastify"
 import swal from "sweetalert"
+import UpdateProfileModal from './UpdateProfileModal'
 
 const  Profile = () => {
+    const [updateProfile,setUpdateProfile]=useState(false)
     const [file,setFile]=useState(null)
     const handleFileSubmit=(e)=>{
         e.preventDefault();
@@ -70,11 +72,12 @@ const  Profile = () => {
         <div className="user-date-joined">
             <strong>Date Joined: </strong>
             <span>Fri October</span>
-        </div>
-        <button className='profile-update-btn'>
+        </div> 
+        <button className='profile-update-btn'onClick={()=>setUpdateProfile(true)} >
             <i className="bi bi-file-person-fill"></i>
             Update profile
         </button>
+        {updateProfile && (<UpdateProfileModal setUpdateProfile={setUpdateProfile}/>)}
     </div>
     <div className="profile-posts-list">
         <h2>omar cherti</h2>
