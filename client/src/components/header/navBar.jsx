@@ -20,9 +20,10 @@ const NavBar = ({setToggle,toggle}) => {
 
 
     </Link>
-    <Link to="/admin" className="nav-link"onClick={()=>setToggle(false)}>
-<i class="bi bi-person-check"></i> Admin Dashboard
+    <Link to="/admin-dashboard" className="nav-link"onClick={()=>setToggle(false)}>
+        <i class="bi bi-person-check"></i> Admin Dashboard
     </Link>
+    
 </ul>
 </nav>
     </div>
