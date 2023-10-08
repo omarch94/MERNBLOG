@@ -2,12 +2,17 @@ const express=require('express');
 //Connection to db
 const connectDb=require('./config/connectDb');
 const {errorHandler,notFound} = require('./middlewares/error');
+const cors=require("cors");
 // PORT
 const port=process.env.PORT||8002;
 require('dotenv').config();
 const app=express();
 //MIDLLEWARES
 app.use(express.json())
+//CORS Policy
+app.use(cors({
+    origin:"http://localhost:3000"
+}))
 //routes
 app.use('/api/auth',require('./routes/authRoute'))
 app.use('/api/users',require('./routes/usersRoute'))

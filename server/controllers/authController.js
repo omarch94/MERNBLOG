@@ -66,7 +66,8 @@ if (!isPasswordMatch){
     _id:user._id,
     isAdmin:user.isAdmin,
     profileFoto:user.profileFoto,
-    token
+    token,
+    username:user.username
 
   })
 
