@@ -6,6 +6,10 @@ const HeaderRight = () => {
   const { user}=useSelector(state=>state.auth)
   const [active,setActive]=useState(false)
   const dispatch=useDispatch()
+  const logOutHandler=()=>{
+    setActive(false);
+    dispatch(logoutUser())
+  }
   return (
     
     <div className="header-right">
@@ -32,9 +36,11 @@ const HeaderRight = () => {
        >
         <i className="bi bi-file-person"></i>
         <span>profile</span>
-        <div className="header-dropdown-item" onClick={()=>dispatch(logoutUser())}>
+        <div className="header-dropdown-item" onClick={logOutHandler}>
+          <Link to="/" className='header-dropdown-item'>
           <i className="bi bi-box-arrow-in-left"></i>
-          <span >logout</span>
+          <span>logout</span>
+          </Link>
         </div>
       </Link>
     </div>
