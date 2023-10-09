@@ -1,24 +1,32 @@
 import { authActions } from "../slices/authSlice";
-
-
+import request from "../../utils/request";
+import {toast} from "react-toastify"
 export function loginUser(user){
     return async (dispatch)=>{
             try{
-                const res=await fetch("http://localhost:8002/api/auth/login",{
-                method:"POST",
-                body:JSON.stringify(user),
-                headers:{
-                    "Content-Type":"application/json"
-                }
+            //     const response=await fetch("http://localhost:8002/api/auth/login",{
+            //     method:"POST",
+            //     body:JSON.stringify(user),
+            //     headers:{
+            //         "Content-Type":"application/json"
+            //     }
 
-            })
-            const data=await res.json();
-                dispatch(authActions.login(data))
-                localStorage.setItem("userInfo",JSON.stringify(data))
+            // })
+            // const data=await response.json();
+            const res=await request.post("/api/auth/login",user) 
+                dispatch(authActions.login(res.data))
+                localStorage.setItem("userInfo",JSON.stringify(res.data))
             
             }catch(error){
+                toast.error(error.response.data.message)
                 console.log(error)
             }
     }
 }
 
+export function logoutUser(){
+    return  (dispatch)=>{
+             dispatch(authActions.logout())
+                localStorage.removeItem("userInfo")
+    }
+}

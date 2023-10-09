@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import {useSelector} from "react-redux"
+import {useSelector,useDispatch} from "react-redux"
+import { logoutUser } from '../../redux/apiCalls/authApiCall'
 const HeaderRight = () => {
   const { user}=useSelector(state=>state.auth)
   const [active,setActive]=useState(false)
+  const dispatch=useDispatch()
   return (
     
     <div className="header-right">
@@ -30,9 +32,9 @@ const HeaderRight = () => {
        >
         <i className="bi bi-file-person"></i>
         <span>profile</span>
-        <div className="header-dropdown-item">
+        <div className="header-dropdown-item" onClick={()=>dispatch(logoutUser())}>
           <i className="bi bi-box-arrow-in-left"></i>
-          <span>logout</span>
+          <span >logout</span>
         </div>
       </Link>
     </div>
