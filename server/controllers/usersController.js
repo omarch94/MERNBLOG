@@ -125,13 +125,13 @@ const {Comment}=require("../models/Comment")
   //4-get the user from db
   const user=await User.findById(req.user.id)
   //5-delete the old profile if exists
-  if(user.profileFoto.publicId!== null){
+  if(user.profileFoto?.publicId!== null){
       await cloudinaryRemoveImage(user.profileFoto.publicId)
   }
   //6-change the profile photo field in the DB
   user.profileFoto={
     url:result.secure_url,
-    publicId:result.publicId
+    publicId:result.public_Id
   }
   await user.save();
   //7-Send Response to client
@@ -139,7 +139,7 @@ const {Comment}=require("../models/Comment")
   profileFoto:
   {
     url:result.secure_url,
-    publidId:result.publicId
+    publicId:result.public_Id
   }
 })
   //8-Remove image from the server 

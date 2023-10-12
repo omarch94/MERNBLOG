@@ -95,7 +95,7 @@ function validateLoginUser(obj){
         const schema=Joi.object({
             username:Joi.string().trim().min(2).max(50).required(),
             // email:Joi.string().trim().min(5).max(50).required(),
-            password:Joi.string().trim().min(8).required(),
+            // password:Joi.string().trim().min(8).required(),
             bio:Joi.string()
         });
         return schema.validate(obj)

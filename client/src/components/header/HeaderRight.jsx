@@ -24,14 +24,14 @@ const HeaderRight = () => {
     {user ? 
     <>
     <div className="header-right-user-info">
-      <span className="header-right-username" onClick={()=>setActive(prev=>!prev)}>{user.username}</span>
-      <img src={user.profileFoto.url} alt="user foto" className='header-right-user-photo' />
+      <span className="header-right-username" onClick={()=>setActive(prev=>!prev)}>{user?.username}</span>
+      <img src={user?.profileFoto.url} alt="user foto" className='header-right-user-photo' />
       {
         active && (
     <div className="header-right-dropdown">
       <Link 
       className='header-dropdown-item'
-       to={`/profile/${user._id}`}
+       to={`/profile/${user?._id}`}
        onClick={()=>setActive(false)}
        >
         <i className="bi bi-file-person"></i>
