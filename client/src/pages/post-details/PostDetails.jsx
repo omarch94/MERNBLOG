@@ -46,7 +46,7 @@ const PostDetails = () => {
       };
   return (
       <section className="post-details">
-    {/* {post.title} */}
+    {post?.title}
     <div className="post-details-image-wrapper">
         <img src={file ? URL.createObjectURL(file):post?.image} alt={post.title} className="post-details-image"/>
         <form  className="update-post-image-form" onSubmit={imageUpdateSubmitHandler}>

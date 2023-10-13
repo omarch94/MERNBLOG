@@ -41,3 +41,22 @@ export function fetchPost(pageNumber) {
     }
   }
   }
+  export function createPost(newPost) {
+    return async (dispatch, getState) => {
+      try {
+        dispatch(postActions.setLoading());
+        await request.post(`/api/posts/add-post`, newPost, {
+          headers: {
+            Authorization: "Bearer " + getState().auth.user.token,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+  
+        dispatch(postActions.setIsPostCreated());
+        setTimeout(() => dispatch(postActions.clearIsPostCreated()), 2000); // 2s
+      } catch (error) {
+        toast.error(error.response.data.message);
+        dispatch(postActions.clearLoading());
+      }
+    };
+  }

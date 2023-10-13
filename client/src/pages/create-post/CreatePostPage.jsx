@@ -1,7 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import "./create-post.css"
 import {toast} from "react-toastify"
+import { useSelector,useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { createPost } from '../../redux/apiCalls/postApiCall'
+import{RotatingLines} from "react-loader-spinner"
 const CreatePostPage = () => {
+  const dispatch=useDispatch()
+  const {loading,isPostCreated}=useSelector(state=>state.post)
   const [title,setTitle]=useState("")
   const [description,setDescription]=useState("")
   const [category,setCategory]=useState("")
@@ -25,9 +31,14 @@ const formSubmitHandler=(e)=>{
       formData.append("title",title)
       formData.append("category",category)
       formData.append("description",description)
-//@-TODO Send Form data to Server
-      console.log(title,description,category,file)
+        dispatch(createPost(formData))
 }
+const navigate=useNavigate()
+useEffect(()=>{
+  if(isPostCreated){
+    navigate("/")
+  }
+},[isPostCreated,navigate])
   return (
    <div className="section create-post">
           <h1 className="create-post-title">
@@ -41,21 +52,20 @@ const formSubmitHandler=(e)=>{
             value={title}
             onChange={(e)=>setTitle(e.target.value)}
             />
-            <select name="" id="" className='create-post-input'
-             value={category}
-             onChange={(e)=>setCategory(e.target.value)}
-            >
-                <option value="" disabled>
-                  Select A category
-                </option>
-                <option value="" >
+           <select
+                  name=""
+                  id=""
+                  className="create-post-input"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select A category
+                  </option>
+                  <option value="Music">Music</option>
+                  <option value="Coffee">Coffee</option>
+                </select>
 
-                    Music               
-                    </option>
-                <option value="" >
-                  Coffe
-                </option>
-            </select>
             <textarea name="" id=""  rows="5" className="create-post-textarea" placeholder='Post Description'
              value={description}
              onChange={(e)=>setDescription(e.target.value)}
@@ -63,7 +73,21 @@ const formSubmitHandler=(e)=>{
             <input type="file" name='file' id="file" className='create-post-upload' 
             onChange={(e)=>setFile(e.target.files[0])}
             />
-            <button type='submit' className='create-post-btn'>Submit</button>
+            <button type='submit' className='create-post-btn'>
+            {loading ? 
+            <RotatingLines
+            strokeColor="grey"
+            strokeWidth="5"
+            animationDuration="0.75"
+            width="96"
+            visible={true}
+          />
+            : 
+            "Create" 
+            }
+
+
+            </button>
       </form>
    </div>
   )
