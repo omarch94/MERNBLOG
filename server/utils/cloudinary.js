@@ -19,7 +19,7 @@ try {
     return data;
 }catch (error) {
     console.log(error);
-    return error
+    throw new Error("Internal Server Error (cloudinary)");
 }}
 
 

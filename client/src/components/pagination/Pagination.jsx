@@ -1,18 +1,38 @@
-import React from 'react'
-import "./pagination.css"
-const Pagination = () => {
-  return (
-    <div className='pagination'>
-      <div className="page previous">   Previous   </div>
+import "./pagination.css";
 
-        {[1,2,3,4,5].map(page=>(
-            <div key={page} className='page'>{page}</div>
-))}
-        
-      <div className="page next">Next</div>
+const Pagination = ({pages, currentPage, setCurrentPage}) => {
+    const generatedPages = [];
+    for(let i = 1; i <= pages; i++) {
+        generatedPages.push(i);
+    }
 
-    </div>
-  )
+    return ( 
+        <div className="pagination">
+            <button 
+             className="page previous"
+             onClick={() => setCurrentPage(current => current - 1)}
+             disabled={currentPage === 1}
+            >
+                Previous
+            </button>
+            {generatedPages.map(page => (
+                <div 
+                 onClick={() => setCurrentPage(page)} 
+                 key={page} 
+                 className={currentPage === page ? "page active" : "page"} 
+                >
+                    {page}
+                </div>
+            ))}
+            <button 
+             className="page next"
+             onClick={() => setCurrentPage(current => current + 1)}
+             disabled={currentPage === pages}
+            >
+                Next
+            </button>
+        </div>
+     );
 }
-
-export default Pagination
+ 
+export default Pagination;
