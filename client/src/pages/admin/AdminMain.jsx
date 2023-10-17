@@ -1,9 +1,20 @@
-import React from 'react'
+import React ,{useEffect}from 'react'
 import "./admin.css"
 import { Link } from 'react-router-dom'
 import AddCategoryForm from './AddCategoryForm'
-
+import {useSelector,useDispatch} from "react-redux"
+import {fetchPost} from "../../redux/apiCalls/postApiCall"
+import {fetchCategories} from "../../redux/apiCalls/categoryApiCall"
 const AdminMain = () => {
+    const {postsCount}=useSelector(state=>state.post)
+    const {categories}=useSelector(state=>state.category)
+    const dispatch=useDispatch()
+    useEffect(()=>{
+        dispatch(fetchPost())
+      },[fetchPost]);
+      useEffect(()=>{
+        dispatch(fetchCategories())
+      },[fetchCategories]);
   return (
     <div className='admin-main'>
         <div className="admin-main-header">
@@ -24,7 +35,7 @@ const AdminMain = () => {
             </div>
             <div className="admin-main-card">
                 <h5 className="admin-card-title"> Posts </h5>
-                <div className="admin-card-count">210</div>
+                <div className="admin-card-count">{postsCount?.length}</div>
                 <div className="admin-card-link-wrapper">
                     <Link 
                     to="/admin-dashboard/posts-table"
@@ -39,7 +50,7 @@ const AdminMain = () => {
             </div>
             <div className="admin-main-card">
                 <h5 className="admin-card-title"> Categories </h5>
-                <div className="admin-card-count">10</div>
+                <div className="admin-card-count">{categories?.length}</div>
                 <div className="admin-card-link-wrapper">
                     <Link 
                     to="/admin-dashboard/categories-table"

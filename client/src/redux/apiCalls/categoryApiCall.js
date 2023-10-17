@@ -14,6 +14,18 @@ export function fetchCategories() {
       }
     }
   }
+ 
+  //add Categories
+
+  export function addCategory(){
+    return async(dispatch,setState)=>{
+      try {
+        
+      } catch (error) {
+        
+      }
+    }
+  }
 
 
  

@@ -1,9 +1,16 @@
-import React from 'react'
+import React ,{useEffect}from 'react'
 import AdminSidebar from './AdminSidebar'
 import "./admin-table.css"
 import swal from "sweetalert"
-
+import {useSelector,useDispatch} from "react-redux"
+import {fetchCategories} from "../../redux/apiCalls/categoryApiCall"
+   
 const CategoriesTable = () => {
+    const {categories}=useSelector(state=>state.category)
+    const dispatch=useDispatch()
+    useEffect(()=>{
+        dispatch(fetchCategories())
+      },[])
      // delete Category handler
      const deleteCategoryHandler = () => {
         swal({
@@ -38,11 +45,11 @@ const CategoriesTable = () => {
                 </tr>
             </thead>
             <tbody>
-                {[1,2,3,4,5,6,7,8,].map((category)=>(
+                {categories.map((category)=>(
                     <tr key={category}>
-                        <td >{category}</td>
+                        <td >{category.title}</td>
                         <td>
-                            <b>music</b>
+                            <b>{category.title}</b>
                         </td>
                         <td>
                             <div className="table-button-group">

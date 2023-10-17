@@ -164,7 +164,7 @@ const {Comment}=require("../models/Comment")
    },
    { new: true }
  ).populate("user", ["-password"])
- .populate("Comment");
+ .populate("comments");
 
  // 5. Send response to the client
  res.status(200).json(updatedPost);

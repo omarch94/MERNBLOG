@@ -1,11 +1,17 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import AdminSidebar from './AdminSidebar'
 import "./admin-table.css"
 import { Link } from 'react-router-dom'
 import swal from "sweetalert"
-import { posts } from '../../dummyData'
-
+// import { posts } from '../../dummyData'
+import {useSelector,useDispatch} from "react-redux"
+import {getPostCount} from "../../redux/apiCalls/postApiCall"
 const PostsTable = () => {
+    const {posts}=useSelector(state=>state.post)
+    const dispatch=useDispatch()
+    useEffect(()=>{
+        dispatch(getPostCount())
+      },[])
      // delete post handler
      const deletePostHandler = () => {
         swal({
@@ -50,14 +56,14 @@ const PostsTable = () => {
                                 alt="" 
                                 className=' table-user-image'
                                 />
-                                <span className='table-username'>{post.user.username}</span>
+                                <span className='table-username'>{post?.user?.username}</span>
                             </div>
                         </td>
                         <td>{post.title}</td>
                         <td>
                             <div className="table-button-group">
                                 <button>
-                                    <Link to={`/posts/details/${post._id}`}>
+                                    <Link to={`/posts/details/${post?._id}`}>
                                     View Post
                                     </Link>
                                 </button>
