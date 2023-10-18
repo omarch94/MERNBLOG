@@ -7,14 +7,23 @@ import swal from "sweetalert"
 import UpdateProfileModal from './UpdateProfileModal'
 import { useDispatch,useSelector } from 'react-redux'
 import { getUserProfile, uploadUserPhoto } from '../../redux/apiCalls/profileApiCall'
-import { useParams } from 'react-router-dom'
+import { useParams ,useNavigate} from 'react-router-dom'
+import { deleteProfile } from '../../redux/apiCalls/profileApiCall'
 import PostItem from '../../components/posts/PostItem'
+import {Oval} from "react-loader-spinner"
+import { logoutUser } from '../../redux/apiCalls/authApiCall'
 const  Profile = () => {
     const dispatch=useDispatch();
-    const {profile}=useSelector((state)=>state?.profile)
+    const {profile,loading,isProfileDeleted}=useSelector((state)=>state?.profile)
     const{posts}=useSelector((state)=>state.post)
     const {user}=useSelector((state)=>state.auth)
     const {id}=useParams();
+    const navigate=useNavigate();
+    // useEffect(() => {
+    //   if(isProfileDeleted){
+    //     navigate("/");
+    //   }
+    // }, [dispatch]);
     useEffect(() => {
         dispatch(getUserProfile(id));
         window.scrollTo(0, 0);
@@ -41,16 +50,34 @@ const  Profile = () => {
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
-              swal("Account  has been deleted!", {
-                icon: "success",
-              });
+          .then((isOk) => {
+            if (isOk) {
+              dispatch(deleteProfile(user?._id))
+              dispatch(logoutUser())
             } else {
               swal("Something went wrong!");
             }
           });     
       };
+      if(loading){
+        return (
+          <div>
+        <Oval
+        height={80}
+        width={80}
+        color="#4fa94d"
+        wrapperStyle={{}}
+        wrapperClass=""
+        visible={true}
+        ariaLabel='oval-loading'
+        secondaryColor="#4fa94d"
+        strokeWidth={2}
+        strokeWidthSecondary={2}
+        />
+        </div>
+          )
+      }
+      
   return (
     <section className="profile">
     <div className='profile-header'> 
@@ -102,7 +129,7 @@ const  Profile = () => {
     <div className="profile-posts-list">
         <h2>{profile?.username}</h2>
         {/* <PostList posts={posts}/> */}
-      {profile?.posts.map(post=><PostItem key={post._id} post={post} username={profile.username} userId={profile?._id}/>)}
+      {profile?.posts?.map(post=><PostItem key={post?._id} post={post} username={profile?.username} userId={profile?._id}/>)}
     </div>
     {user?._id === profile?._id && (
     <button className='delete-account-btn' onClick={deleteAccounttHandler}>

@@ -74,3 +74,28 @@ export function getUserProfile(userId) {
       }
     }
   }
+
+     // delete profile 
+     export function deleteProfile(userId){
+      return async (dispatch,getState)=>{
+        try {
+          // const state=getState()
+          dispatch(profileActions.setLoading());
+         const res= await request.delete(`/api/users/profile/${userId}`
+          ,{
+            headers:{
+              Authorization:"Bearer "+getState().auth.user.token,
+            }
+          })
+            dispatch(profileActions.setIsProfileDeleted());
+            setTimeout(dispatch(profileActions.clearProfileDeleted),2000)
+            toast.success(res?.data.message)
+            dispatch(profileActions.clearLoading())
+          
+        }
+           catch (error) {
+          toast.error(error.response.data.message);
+        }
+      }
+    }
+  
