@@ -8,7 +8,7 @@ const postSlice=createSlice({
         postsCate:[],
         loading:false,
         isPostCreated:false,
-        postSingle:null,
+        post:null,
     },
     reducers:{
      setPost(state,action){
@@ -34,13 +34,26 @@ const postSlice=createSlice({
       state.isPostCreated=false
      },
      postDetailss(state,action){
-      state.postSingle=action.payload
+      state.post=action.payload
      },
      setPostLikes(state, action) {
-      state.postSingle.likes = action.payload.likes;
+      state.post.likes = action.payload.likes;
     },
     deletePost(state,action){
       state.posts=action.posts.filter(p=>p._id!==action.payload)
+    },
+    addComment(state,action){
+      state.post.comments.push(action.payload)
+    },
+    updateComment(state,action){
+      state.post.comments=state.posts.comments.map((comment)=>
+      comment._id===action.payload._id ? comment.payload : comment
+      )
+    },
+    deleteComment(state,action){
+      const comment=state.post.comments.find(comment=>comment._id!==action.payload)
+      const commentIndex=state.post.comments.indexOf(comment)
+      state.post.comments.splice(commentIndex,1)
     }
    }
 })

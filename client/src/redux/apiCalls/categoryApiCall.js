@@ -3,7 +3,7 @@ import {toast} from "react-toastify"
 import { categoryActions } from "../slices/categorySlice";
 
 // fetch Categories
-export function fetchCategories() {
+export function fetchCategories(user) {
     return async (dispatch) => {
       try {
         const res = await request.get(`/api/categories`);
@@ -18,7 +18,7 @@ export function fetchCategories() {
   //add Categories
 
   export function addCategory(){
-    return async(dispatch,setState)=>{
+    return async(dispatch,getState)=>{
       try {
         
       } catch (error) {

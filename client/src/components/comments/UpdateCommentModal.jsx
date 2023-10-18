@@ -1,16 +1,23 @@
 import React,{useState} from 'react'
 import "./update-comment.css"
 import {toast} from "react-toastify"
-const UpdateCommentModal = ({setUpdateComment}) => {
-  
-    const[comment,setComment] =useState("this is great");
+import { useDispatch } from 'react-redux'
+import { updateComment } from '../../redux/apiCalls/commentApiCall'
+const UpdateCommentModal = ({setUpdateComment,commentForUpdate}) => {
+  const dispatch=useDispatch()
+    const[text,setText] =useState(commentForUpdate?.text);
  
     const updateCommentHandler=(e)=>{
         e.preventDefault();
-        if(comment.trim()===""){
+        if(text.trim()===""){
                 toast.error("please write something")
         }
+        dispatch(updateComment(commentForUpdate?._id,{text}))
+        setUpdateComment(false)
     }
+    console.log("commentForUpdate:", commentForUpdate);
+  console.log("commentForUpdate?.comment:", commentForUpdate?.text);
+  console.log("text:", text);
    return (
        <div className="update-comment">
          <form className="update-comment-form" onSubmit={updateCommentHandler}>
@@ -21,8 +28,8 @@ const UpdateCommentModal = ({setUpdateComment}) => {
              </h1>
              <input type="text" 
              className='update-comment-input'
-             value={comment}
-             onChange={(e)=>setComment(e.target.value)}
+             value={text}
+             onChange={(e)=>setText(e.target.value)}
              />
              
             <button type="submit" className='update-comment-btn'>Update</button>

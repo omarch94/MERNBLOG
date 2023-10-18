@@ -4,7 +4,7 @@ import { useState } from "react";
 import UpdateCommentModal from "./UpdateCommentModal";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
-// import { deleteComment } from "../../redux/apiCalls/commentApiCall";
+import { deleteComment } from "../../redux/apiCalls/commentApiCall";
 
 const CommentList = ({ comments }) => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const CommentList = ({ comments }) => {
       dangerMode: true,
     }).then((isOk) => {
       if (isOk) {
-        // dispatch(deleteComment(commentId));
+        dispatch(deleteComment(commentId));
       }
     });
   };
@@ -40,7 +40,7 @@ const CommentList = ({ comments }) => {
       {comments?.map((comment) => (
         <div key={comment._id} className="comment-item">
           <div className="comment-item-info">
-            <div className="comment-item-username">{comment.username}</div>
+            <div className="comment-item-username">{comment?.username}</div>
             <div className="comment-item-time">
               <Moment fromNow ago>
                 {comment.createdAt}
@@ -48,8 +48,8 @@ const CommentList = ({ comments }) => {
               ago
             </div>
           </div>
-          <p className="comment-item-text">{comment.text}</p>
-          {user?._id === comment.user && (
+          <p className="comment-item-text">{comment?.text}</p>
+          {user?._id === comment?.user && (
             <div className="comment-item-icon-wrapper">
               <i
                 onClick={() => updateCommentHandler(comment)}
@@ -65,7 +65,7 @@ const CommentList = ({ comments }) => {
       ))}
       {updateComment && (
         <UpdateCommentModal
-          commentForUpdate={commentForUpdate}
+        commentForUpdate={commentForUpdate}
           setUpdateComment={setUpdateComment}
         />
       )}

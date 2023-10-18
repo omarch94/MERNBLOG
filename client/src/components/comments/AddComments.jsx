@@ -1,14 +1,20 @@
 import React,{useState} from 'react'
 import {toast} from "react-toastify"
 import "./add-comment.css"
-const AddComments = () => {
-    const[comment,setComment]=useState('')
+import {useDispatch} from "react-redux"
+import { createComment } from '../../redux/apiCalls/commentApiCall'
+const AddComments = ({postId}) => {
+  console.log(postId)
+  const dispatch=useDispatch();
+
+    const[text,setText]=useState('')
     const addSubmitHandler=(e)=>{
         e.preventDefault();
-        if(comment.trim()===""){
+        if(text.trim()===""){
                 toast.error("please write something")
         }
-        setComment("")
+        dispatch(createComment({text,postId}))
+        setText("")
     }
   return (
     <form  className="add-comment" onSubmit={addSubmitHandler}>
@@ -16,8 +22,8 @@ const AddComments = () => {
             type="text" 
             placeholder='add Comment'
             className='add-comment-input' 
-            value={comment} 
-            onChange={(e)=>setComment(e.target.value)} 
+            value={text} 
+            onChange={(e)=>setText(e.target.value)} 
         />
         <button type="submit" className='add-comment-btn'>Comment </button>
     </form>

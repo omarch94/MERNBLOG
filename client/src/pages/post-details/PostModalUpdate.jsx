@@ -47,7 +47,7 @@ useEffect(()=>{
                   name=""
                   id=""
                   className="create-post-input"
-                  value={category}
+                  // value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
                    <option value="" disabled>
