@@ -5,22 +5,33 @@ import AddCategoryForm from './AddCategoryForm'
 import {useSelector,useDispatch} from "react-redux"
 import {fetchPost} from "../../redux/apiCalls/postApiCall"
 import {fetchCategories} from "../../redux/apiCalls/categoryApiCall"
+import { getUsersCount } from '../../redux/apiCalls/profileApiCall'
+import { fetchAllcomments } from '../../redux/apiCalls/commentApiCall'
 const AdminMain = () => {
-    const {postsCount}=useSelector(state=>state.post)
+    const {postsCount,post}=useSelector(state=>state.post)
     const {categories}=useSelector(state=>state.category)
+    const {comments}=useSelector(state=>state.comment)
+    const {profiles}=useSelector(state=>state.profile)
     const dispatch=useDispatch()
     useEffect(()=>{
         dispatch(fetchPost())
       },[fetchPost]);
+
       useEffect(()=>{
         dispatch(fetchCategories())
       },[fetchCategories]);
+      useEffect(()=>{
+        dispatch(getUsersCount())
+      },[getUsersCount])
+      useEffect(()=>{
+            dispatch(fetchAllcomments())
+      },[])
   return (
     <div className='admin-main'>
         <div className="admin-main-header">
             <div className="admin-main-card">
                 <h5 className="admin-card-title"> Users </h5>
-                <div className="admin-card-count">120</div>
+                <div className="admin-card-count">{profiles?.length}</div>
                 <div className="admin-card-link-wrapper">
                     <Link 
                     to="/admin-dashboard/users-table"
@@ -65,7 +76,7 @@ const AdminMain = () => {
             </div>
             <div className="admin-main-card">
                 <h5 className="admin-card-title"> Comments </h5>
-                <div className="admin-card-count">160</div>
+                <div className="admin-card-count">{comments?.length}</div>
                 <div className="admin-card-link-wrapper">
                     <Link 
                     to="/admin-dashboard/comments-table"

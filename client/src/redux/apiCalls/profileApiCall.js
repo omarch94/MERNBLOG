@@ -99,3 +99,44 @@ export function getUserProfile(userId) {
       }
     }
   
+   // Get Users Count (for admin dashboard)
+export function getUsersCount() {
+  return async (dispatch, getState) => {
+    try {
+      const res= await request.get(
+        `/api/users/count-users`,
+        {
+          headers: {
+            Authorization: "Bearer " + getState().auth.user.token,
+          },
+        }
+      );
+
+      dispatch(profileActions.setUserCount(res.data));
+      console.log("Profiles count",res.data)
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+}
+
+// Get All Users Profile (for admin dashboard)
+export function getAllUsersProfile() {
+  return async (dispatch, getState) => {
+    try {
+      const { data } = await request.get(
+        `/api/users/profile`,
+        {
+          headers: {
+            Authorization: "Bearer " + getState().auth.user.token,
+          },
+        }
+      );
+
+      dispatch(profileActions.setProfiles(data));
+      console.log(data)
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+}

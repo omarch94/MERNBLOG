@@ -152,3 +152,15 @@ export function fetchSinglePost(postId) {
       }
     }
   }
+
+  // Get All Posts
+export function getAllPosts() {
+  return async (dispatch) => {
+    try {
+      const { data } = await request.get(`/api/posts`);
+      dispatch(postActions.setPost(data));
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  };
+}

@@ -12,7 +12,7 @@ const commentSlice=createSlice({
      addComment(state,action){
         state.comments=action.payload
      },
-     deleteCommentFromPost(state,action){
+     deleteComment(state,action){
         state.comments=state.comments.filter(c=>c._id!==action.payload)
      },
 

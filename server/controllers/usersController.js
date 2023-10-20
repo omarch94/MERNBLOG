@@ -8,7 +8,7 @@ const{Post}=require("../models/Post")
 const {Comment}=require("../models/Comment")
 /**------------------------------------
  * @desc Get  All users
- * @route  api/auth/profile
+ * @route  api/users/profile
  * @method Get
  * @access private (only admin)
  -------------------------------------*/
@@ -84,7 +84,9 @@ const {Comment}=require("../models/Comment")
       }
   
       // Send the updated user data as a response
-      res.status(200).json(updatedUser);
+      res.status(200)
+      .json(updatedUser)
+      .populate("posts");
     } catch (error) {
       // Handle unexpected errors, e.g., database connection issues
       console.error('Error:', error);

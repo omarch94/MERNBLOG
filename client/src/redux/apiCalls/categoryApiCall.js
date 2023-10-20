@@ -17,16 +17,40 @@ export function fetchCategories(user) {
  
   //add Categories
 
-  export function addCategory(){
+  export function createCategory(newCategory){
     return async(dispatch,getState)=>{
       try {
-        
+        const res = await request.post(`/api/categories`,newCategory,{
+          headers:{
+            Authorization:"Bearer "+ getState().auth.user.token,
+          }
+        });
+        dispatch(categoryActions.addCategory(res.data))
+
       } catch (error) {
+        toast.error(error.response.data.message)
         
       }
     }
   }
 
+//delete Categories
 
+export function deteleteCategory(categoryId){
+  return async(dispatch,getState)=>{
+    try {
+      const res= await request.post(`/api/categories/${categoryId}`,{
+        headers:{
+          Authorization:"Bearer "+ getState().auth.user.token,
+        }
+      });
+      dispatch(categoryActions.deleteCategory(res.data.categoryId))
+
+    } catch (error) {
+      toast.error(error.response.data.message)
+      
+    }
+  }
+}
  
   

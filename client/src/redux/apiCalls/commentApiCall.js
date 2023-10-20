@@ -3,7 +3,7 @@ import {toast} from "react-toastify"
 import { postActions } from "../slices/postsSlice";
 import { commentActions } from "../slices/commentSlice";
 
-// fetch Categories
+// create comment
 export function createComment(newComment) {
     return async (dispatch,getState) => {
       try {
@@ -47,11 +47,29 @@ export function createComment(newComment) {
                 Authorization:"Bearer "+ getState().auth.user.token,
               },
         });
-        dispatch(commentActions.deleteCommentFromPost(commentId));
+        dispatch(postActions.deleteCommentFromPost(commentId));
+        dispatch(commentActions.deleteComment(commentId));
       } catch (error) {
         toast.error(error.response.data.message);
       }
     }
   }
+
+  // fetch all comments
+  export function fetchAllcomments() {
+    return async (dispatch,getState) => {
+      try {
+     const {data}=  await request.get(`/api/comments/`,{
+            headers: {
+                Authorization:"Bearer "+ getState().auth.user.token,
+              },
+        });
+        dispatch(commentActions.setComment(data));
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+    }
+  }
+
  
   

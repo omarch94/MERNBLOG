@@ -3,7 +3,7 @@ import AdminSidebar from './AdminSidebar'
 import "./admin-table.css"
 import swal from "sweetalert"
 import {useSelector,useDispatch} from "react-redux"
-import {fetchCategories} from "../../redux/apiCalls/categoryApiCall"
+import {deteleteCategory, fetchCategories} from "../../redux/apiCalls/categoryApiCall"
    
 const CategoriesTable = () => {
     const {categories}=useSelector(state=>state.category)
@@ -12,7 +12,7 @@ const CategoriesTable = () => {
         dispatch(fetchCategories())
       },[])
      // delete Category handler
-     const deleteCategoryHandler = () => {
+     const deleteCategoryHandler = (categoryId) => {
         swal({
             title: "Are you sure?",
             text: "Once deleted, you will not be able to recover this imaginary file!",
@@ -20,14 +20,10 @@ const CategoriesTable = () => {
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
-              swal("Category  has been deleted!", {
-                icon: "success",
-              });
-            } else {
-              swal("Something went wrong!");
-            }
+          .then((isOk) => {
+            if (isOk) {
+              dispatch(deteleteCategory(categoryId))
+            } 
           });
           
       };
@@ -45,15 +41,15 @@ const CategoriesTable = () => {
                 </tr>
             </thead>
             <tbody>
-                {categories.map((category)=>(
-                    <tr key={category}>
-                        <td >{category.title}</td>
+                {categories.map((category,index)=>(
+                    <tr key={category._id}>
+                        <td >{index+1}</td>
                         <td>
                             <b>{category.title}</b>
                         </td>
                         <td>
                             <div className="table-button-group">
-                                <button onClick={deleteCategoryHandler}>Delete Category </button>
+                                <button onClick={()=>deleteCategoryHandler(category?._id)}>Delete Category </button>
                             </div>
                         </td>
                     </tr>

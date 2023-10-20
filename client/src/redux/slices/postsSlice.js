@@ -50,7 +50,7 @@ const postSlice=createSlice({
       comment._id===action.payload._id ? comment.payload : comment
       )
     },
-    deleteComment(state,action){
+    deleteCommentFromPost(state,action){
       const comment=state.post.comments.find(comment=>comment._id!==action.payload)
       const commentIndex=state.post.comments.indexOf(comment)
       state.post.comments.splice(commentIndex,1)

@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import {toast} from "react-toastify"
+import { useDispatch } from 'react-redux'
+import {createCategory} from "../../redux/apiCalls/categoryApiCall"
 const AddCategoryForm = () => {
-    const[category,setCategory]=useState("")
+  const dispatch=useDispatch()
+    const[title,setTitle]=useState("")
     const handleSubmit=(e)=>{
             e.preventDefault();
 
-            if(category.trim()===""){
+            if(title.trim()===""){
                 toast.warning("you need to enter category")
             }
+            dispatch(createCategory({title}))
+            setTitle("")
     }
   return (
     <div className='add-category'>
@@ -19,8 +24,8 @@ const AddCategoryForm = () => {
                 type="text" 
                 id="title"
                 placeholder='Enter Category Title'
-                    value={category}
-                    onChange={(e)=>setCategory(e.target.value)}
+                    value={title}
+                    onChange={(e)=>setTitle(e.target.value)}
                 />
             </div>
             <button className='add-category-btn' type='submit'> Add</button>
