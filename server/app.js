@@ -19,7 +19,7 @@ app.use('/api/users',require('./routes/usersRoute'))
 app.use('/api/posts',require('./routes/postRoute'))
 app.use('/api/comments',require('./routes/commentRoute'))
 app.use('/api/categories',require('./routes/categoryRoute'))
-
+app.use('/api/password',require('./routes/passwordRoute'))
 // NOT FOUND ERROR HANDLER
 app.use(notFound)
 // Error Handler Midlleware

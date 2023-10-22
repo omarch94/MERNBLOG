@@ -86,6 +86,23 @@ function validateLoginUser(obj){
     });
     return schema.validate(obj)
     }
+    //validate Email
+function validateEmail(obj){
+    const schema=Joi.object({
+        // username:Joi.string().trim().min(2).max(50).required(),
+        email:Joi.string().trim().min(5).max(50).required(),
+    
+    });
+    return schema.validate(obj)
+    }
+    //validate New Passwword
+function validateNewPawssord(obj){
+    const schema=Joi.object({
+        password:Joi.string().trim().min(8).required()
+    
+    });
+    return schema.validate(obj)
+    }
     
     
     //validate update user 
@@ -100,4 +117,4 @@ function validateLoginUser(obj){
         });
         return schema.validate(obj)
         }   
-module.exports={User,validateRegisterUser,validateLoginUser,validateUpdateUser}
+module.exports={User,validateRegisterUser,validateLoginUser,validateUpdateUser,validateEmail,validateNewPawssord}
